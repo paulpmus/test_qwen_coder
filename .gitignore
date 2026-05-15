@@ -5,15 +5,21 @@ node_modules/
 # Build outputs
 dist/
 build/
-coverage/
-htmlcov/
+target/
 
 # Environment variables
 .env
 .env.local
-.env.*
+*.env.*
 
-# Python cache
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Python cache (if any Python files exist)
 __pycache__/
 *.pyc
 *.pyo
@@ -22,28 +28,15 @@ __pycache__/
 # Logs
 *.log
 
-# Temporary files
-*.tmp
-*.swp
-*~
-
-# IDE specific
-.vscode/
-.idea/
-
-# OS specific
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Testing
-.mypy_cache/
-.pytest_cache/
-.coverage
+# Coverage reports
+coverage/
+htmlcov/
+*.coverage
 
-# Package management
-package-lock.json
-yarn.lock
-
-# Vue/Vite specific
-.vite/
+# Temporary files
+*.tmp
 ```
