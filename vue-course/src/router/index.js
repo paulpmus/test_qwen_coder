@@ -15,7 +15,7 @@ const routes = [
   { path: '/tema-10-watch-lifecycle', name: 'Tema10', component: () => import('../views/Tema10WatchLifecycle.vue') },
   { path: '/tema-11-composables', name: 'Tema11', component: () => import('../views/Tema11Composables.vue') },
   { path: '/tema-12-api', name: 'Tema12', component: () => import('../views/Tema12API.vue') },
-  { path: '/tema-13-router', name: 'Tema13', component: () => import('../views/Tema13Router.vue') },
+  { path: '/tema-13-router/:id?', name: 'Tema13', component: () => import('../views/Tema13Router.vue') },
   { path: '/tema-14-pinia', name: 'Tema14', component: () => import('../views/Tema14Pinia.vue') },
   { path: '/tema-15-slots', name: 'Tema15', component: () => import('../views/Tema15Slots.vue') },
 ]

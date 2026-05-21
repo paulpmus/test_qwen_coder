@@ -143,7 +143,7 @@ const isLoggedIn = ref(true)
   &lt;!-- v-for con key --&gt;
   &lt;ul&gt;
     &lt;li v-for="item in items" :key="item.id"&gt;
-      {{ item.name }}
+      <!--{{ item.name }}-->
     &lt;/li&gt;
   &lt;/ul&gt;
   

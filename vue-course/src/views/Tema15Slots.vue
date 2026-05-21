@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import CardBasic from '../components/CardBasic.vue'
 
 const showModal = ref(false)
 const modalContent = ref('')
@@ -23,6 +24,7 @@ function closeModal() {
     <div class="info-box">
       <h2>Conceptos Clave</h2>
       <ul>
+        <li>Slots → sirven para pasar fragmentos de contenido/plantilla (HTML, componentes, texto dinámico)</li>
         <li><code>&lt;slot&gt;</code>: Punto de inserción para contenido del padre</li>
         <li>Slots con nombre: <code>&lt;slot name="header"&gt;</code></li>
         <li>Slots con scope: pasar datos del hijo al padre</li>
@@ -35,21 +37,8 @@ function closeModal() {
       <h2>Ejemplo Práctico</h2>
       
       <div class="demo-box">
-        <h3>Slot Básico</h3>
-        <div class="card-basic">
-          <div class="card-header">
-            <slot name="header">Header por defecto</slot>
-          </div>
-          <div class="card-body">
-            <slot>Contenido por defecto</slot>
-          </div>
-          <div class="card-footer">
-            <slot name="footer">Footer por defecto</slot>
-          </div>
-        </div>
-
         <!-- Uso con slots nombrados -->
-        <div class="card-basic custom-slots">
+        <CardBasic class="custom-slots">
           <template #header>
             <h4>🎉 Header Personalizado</h4>
           </template>
@@ -59,7 +48,7 @@ function closeModal() {
           <template #footer>
             <span>⭐ Footer Personalizado</span>
           </template>
-        </div>
+        </CardBasic>
       </div>
 
       <div class="demo-box">
@@ -89,7 +78,7 @@ function closeModal() {
 
       <div class="demo-box">
         <h3>Teleport - Tooltip</h3>
-        <div class="tooltip-container">
+        <div class="tooltip-container" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
           Pasa el cursor por aquí
           <Teleport to="body">
             <div v-if="showTooltip" class="tooltip-content">
@@ -108,7 +97,7 @@ function closeModal() {
 
 &lt;!-- Componente Padre --&gt;
 &lt;Hijo v-slot="{ user, count }"&gt;
-  {{ user.name }} tiene {{ count }} items
+  <!--{{ user.name }} tiene {{ count }} items-->
 &lt;/Hijo&gt;
 
 &lt;!-- Sintaxis abreviada --&gt;
@@ -187,29 +176,6 @@ function closeModal() {
 .demo-box h3 {
   margin-top: 0;
   color: #42b883;
-}
-
-.card-basic {
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 15px;
-}
-
-.card-header {
-  background: #42b883;
-  color: white;
-  padding: 15px;
-}
-
-.card-body {
-  padding: 20px;
-}
-
-.card-footer {
-  background: #f8f9fa;
-  padding: 15px;
-  border-top: 1px solid #ddd;
 }
 
 .custom-slots {

@@ -41,7 +41,7 @@ const topics = [
         </router-link>
       </div>
     </nav>
-
+<!--
     <section class="info-section">
       <h2>¿Qué aprenderás?</h2>
       <div class="features">
@@ -67,6 +67,7 @@ const topics = [
         </div>
       </div>
     </section>
+-->
   </div>
 </template>
 

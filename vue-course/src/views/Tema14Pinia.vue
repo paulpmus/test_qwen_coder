@@ -24,7 +24,7 @@ function removeFromCart(productId) {
 }
 
 function login() {
-  store.setUser({ name: 'Usuario Demo', email: 'demo@example.com' })
+  store.setUser({ name: 'Usuario Demo', email: 'demo@example.com', age: 20 })
 }
 
 function logout() {
@@ -55,6 +55,7 @@ function logout() {
         <div v-if="store.user" class="user-info">
           <p>👤 <strong>{{ store.user.name }}</strong></p>
           <p>{{ store.user.email }}</p>
+          <p>{{ store.user.age }}</p>
           <button @click="logout" class="btn btn-danger">Logout</button>
         </div>
         <div v-else class="user-info">
@@ -65,16 +66,16 @@ function logout() {
 
       <div class="demo-box">
         <h3>Carrito de Compras</h3>
-        <p class="cart-count">Items en carrito: <strong>{{ store.items.length }}</strong></p>
-        <p class="cart-total">Total: <strong>${{ cartTotal }}</strong></p>
+        <p class="cart-count">Items en carrito: <strong>{{ store.totalItems }}</strong></p>
+        <p class="cart-total">Total: <strong>${{ store.cartTotal }}</strong></p>
 
-        <div v-if="store.items.length === 0" class="empty-cart">
+        <div v-if="store.totalItems === 0" class="empty-cart">
           El carrito está vacío
         </div>
         <ul v-else class="cart-list">
-          <li v-for="item in store.items" :key="item.id" class="cart-item">
+          <li v-for="item in store.items" :key="item.cartItemId" class="cart-item">
             <span>{{ item.name }} - ${{ item.price }}</span>
-            <button @click="removeFromCart(item.id)" class="btn-remove">×</button>
+            <button @click="removeFromCart(item.cartItemId)" class="btn-remove">×</button>
           </li>
         </ul>
       </div>

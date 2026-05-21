@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 
-const isActive = ref(true)
+const isActive = ref(false)
 const error = ref(false)
 const fontSize = ref(16)
 const textColor = ref('#333333')
@@ -192,7 +192,7 @@ const classObject = reactive({
 }
 
 .demo-box.active {
-  border-color: #42b883;
+  border-color: #2925a1;
   box-shadow: 0 4px 12px rgba(66, 184, 131, 0.3);
 }
 

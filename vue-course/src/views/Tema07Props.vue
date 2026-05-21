@@ -1,201 +1,171 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+import Tema07PropsHijo from './Tema07PropsHijo.vue';
 
-// Componente hijo que recibe props
-const props = defineProps({
-  title: String,
-  count: Number,
-  isActive: Boolean,
-  tags: Array,
-  user: Object
-})
+const titulo = ref("")
+const contador = ref()
+const estado = ref()
+const etiquetas = reactive([])
+const usuario = reactive({})
+
+// Para agregar una nueva etiqueta
+const nuevaEtiqueta = ref('')
+
+function agregarEtiqueta() {
+  if (nuevaEtiqueta.value.trim()) {
+    etiquetas.push(nuevaEtiqueta.value)
+    nuevaEtiqueta.value = ''
+  }
+}
+
+function eliminarEtiqueta(index) {
+  etiquetas.splice(index, 1)
+}
 </script>
 
 <template>
-  <div class="topic-container">
-    <h1>Tema 7: Paso de Datos con props</h1>
+  <!--Componente padre-->
+  <div class="formulario-contenedor">
+    <h3>Componente padre</h3>
     
-    <div class="info-box">
-      <h2>Conceptos Clave</h2>
-      <ul>
-        <li><code>defineProps()</code>: Define las propiedades que acepta un componente</li>
-        <li>Las props son solo lectura (no modificarlas directamente)</li>
-        <li>Validación de tipos: String, Number, Boolean, Array, Object, Function</li>
-        <li>Props opcionales vs requeridas</li>
-        <li>Valores por defecto con <code>withDefaults()</code></li>
-      </ul>
+    <div class="form-group">
+      <label>Título:</label>
+      <input v-model="titulo" type="text" placeholder="Ingresa un título" />
     </div>
 
-    <div class="demo-section">
-      <h2>Ejemplo Práctico</h2>
-      
-      <div class="card-demo">
-        <h3>Componente Card con props:</h3>
-        
-        <div class="card">
-          <div class="card-header">{{ props.title || 'Título por defecto' }}</div>
-          <div class="card-body">
-            <p>Contador recibido: <strong>{{ props.count }}</strong></p>
-            <p>Estado: <span :class="props.isActive ? 'active' : 'inactive'">
-              {{ props.isActive ? '✓ Activo' : '✗ Inactivo' }}
-            </span></p>
-            <div v-if="props.tags && props.tags.length">
-              <strong>Tags:</strong>
-              <span v-for="tag in props.tags" :key="tag" class="tag">{{ tag }}</span>
-            </div>
-            <div v-if="props.user">
-              <strong>Usuario:</strong> {{ props.user.name }} ({{ props.user.email }})
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="form-group">
+      <label>Contador:</label>
+      <input v-model.number="contador" type="number" />
+    </div>
 
-      <div class="props-values">
-        <h3>Valores actuales de props:</h3>
-        <pre>{{ JSON.stringify(props, null, 2) }}</pre>
+    <div class="form-group">
+      <label>Estado (Activo):</label>
+      <input v-model="estado" type="checkbox" />
+    </div>
+
+    <div class="form-group">
+      <label>Etiquetas:</label>
+      <div class="tags-list">
+        <span v-for="(tag, index) in etiquetas" :key="index" class="tag">
+          {{ tag }}
+          <button @click="eliminarEtiqueta(index)" class="btn-remove">✕</button>
+        </span>
+      </div>
+      <div class="add-tag">
+        <input v-model="nuevaEtiqueta" type="text" placeholder="Nueva etiqueta" />
+        <button @click="agregarEtiqueta" class="btn-add">Agregar</button>
       </div>
     </div>
 
-    <div class="code-example">
-      <h3>Código de ejemplo:</h3>
-      <pre><code>&lt;!-- Componente Hijo: MiComponente.vue --&gt;
-&lt;script setup&gt;
-// Props básicas
-const props = defineProps({
-  title: String,
-  count: Number,
-  isActive: Boolean
-})
+    <div class="form-group">
+      <label>Usuario - Nombre:</label>
+      <input v-model="usuario.name" type="text" />
+    </div>
 
-// Con validación detallada
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true
-  },
-  name: {
-    type: String,
-    default: 'Sin nombre'
-  },
-  tags: {
-    type: Array,
-    default: () => []
-  }
-})
-
-// Con withDefaults (TypeScript friendly)
-const props = withDefaults(defineProps&lt;{
-  title?: string
-  count?: number
-}&gt;(), {
-  title: 'Default',
-  count: 0
-})
-&lt;/script&gt;
-
-&lt;!-- Componente Padre --&gt;
-&lt;template&gt;
-  &lt;MiComponente 
-    :title="'Mi Título'" 
-    :count="5" 
-    :is-active="true" 
-  /&gt;
-&lt;/template&gt;</code></pre>
+    <div class="form-group">
+      <label>Usuario - Email:</label>
+      <input v-model="usuario.email" type="email" />
     </div>
   </div>
+
+  <!-- Componente hijo recibe los props -->
+  <Tema07PropsHijo :title="titulo" :count="contador" :is-active="estado" :tags="etiquetas" :user="usuario" />
 </template>
 
 <style scoped>
-.topic-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.info-box {
-  background: #f0f9ff;
-  border-left: 4px solid #0ea5e9;
-  padding: 16px;
-  margin-bottom: 24px;
-  border-radius: 4px;
-}
-
-.demo-section {
-  background: #fafafa;
-  padding: 24px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-
-.card-demo {
-  margin-bottom: 24px;
-}
-
-.card {
+.formulario-contenedor {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-
-.card-header {
-  background: #42b883;
-  color: white;
-  padding: 15px;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.card-body {
   padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.active {
-  color: #28a745;
+.formulario-contenedor h2 {
+  margin-bottom: 20px;
+  color: #35495e;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
+  color: #333;
 }
 
-.inactive {
-  color: #dc3545;
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .tag {
-  display: inline-block;
-  background: #e9ecef;
-  padding: 4px 8px;
+  background: #42b883;
+  color: white;
+  padding: 6px 10px;
   border-radius: 4px;
-  margin: 4px 4px 4px 0;
-  font-size: 0.85em;
-}
-
-.props-values {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.props-values pre {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-
-.code-example {
-  background: #2d2d2d;
-  color: #f8f8f2;
-  padding: 20px;
-  border-radius: 8px;
-  overflow-x: auto;
-}
-
-.code-example pre {
-  margin: 0;
-}
-
-.code-example code {
-  font-family: 'Consolas', 'Monaco', monospace;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.9em;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+}
+
+.add-tag {
+  display: flex;
+  gap: 8px;
+}
+
+.add-tag input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.btn-add {
+  background: #42b883;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-add:hover {
+  background: #369070;
 }
 </style>

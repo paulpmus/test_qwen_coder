@@ -52,11 +52,15 @@ function goForward() {
       <div class="demo-box">
         <h3>Información de la Ruta Actual</h3>
         <div class="route-info">
+          <p><strong>FullPath:</strong> {{ route.fullPath }}</p>
           <p><strong>Path:</strong> {{ route.path }}</p>
           <p><strong>Name:</strong> {{ route.name || '(sin nombre)' }}</p>
           <p><strong>Params:</strong> {{ JSON.stringify(route.params) }}</p>
           <p><strong>Query:</strong> {{ JSON.stringify(route.query) }}</p>
         </div>
+        <router-link to="/tema-13-router/2">Rutear con param id=2</router-link>
+        &nbsp;
+        <router-link to="/tema-13-router?filtro=on">Rutear con query filtro=on</router-link>
       </div>
 
       <div class="demo-box">

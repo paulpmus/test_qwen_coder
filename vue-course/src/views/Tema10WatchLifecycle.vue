@@ -7,7 +7,6 @@ const timer = ref(null)
 const seconds = ref(0)
 const isRunning = ref(false)
 const mountTime = ref(null)
-const unmountWarning = ref(false)
 
 let intervalId = null
 
@@ -48,7 +47,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  unmountWarning.value = true
   clearInterval(intervalId)
   console.log('Componente desmontado')
 })
@@ -99,7 +97,6 @@ onUnmounted(() => {
       <div class="demo-box">
         <h3>Información del ciclo de vida</h3>
         <p><strong>Montado en:</strong> {{ mountTime || 'Esperando...' }}</p>
-        <p v-if="unmountWarning" class="warning">⚠️ El componente fue desmontado (ver consola)</p>
       </div>
     </div>
 

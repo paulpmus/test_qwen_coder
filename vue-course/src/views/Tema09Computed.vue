@@ -209,7 +209,7 @@ const fullName = computed({
 }
 
 .stat-card {
-  background: white;
+  background: rgb(211, 134, 134);
   padding: 15px;
   border-radius: 8px;
   text-align: center;

@@ -77,7 +77,7 @@ function applyTheme() {
 
       <div class="demo-box">
         <h3>useToggle - Interruptor reusable</h3>
-        <p>Estado: <strong>{{ isDarkMode ? 'ON' : 'OFF' }}</strong></p>
+        <p>Estado Darkmode: <strong>{{ isDarkMode ? 'ON' : 'OFF' }}</strong></p>
         <div class="buttons">
           <button @click="toggleDarkMode" class="btn btn-primary">Toggle</button>
           <button @click="applyTheme" class="btn btn-success">Aplicar Tema</button>
