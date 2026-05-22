@@ -76,7 +76,6 @@ const clearCompleted = () => {
         <input 
           type="checkbox" 
           v-model="todo.completed" 
-          @change="toggleTodo(todo)"
           class="todo-checkbox"
         />
         <span class="todo-text">{{ todo.text }}</span>
