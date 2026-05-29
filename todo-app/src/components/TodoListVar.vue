@@ -1,36 +1,32 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { db } from '../firebase.js'
-import { collection, addDoc, doc, onSnapshot, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore'
+import { ref, computed } from 'vue'
 
 const newTodo = ref('')
-const todos = ref([])
+const todos = ref([
+  { id: 1, text: 'Aprender Vue.js Composition API', completed: false },
+  { id: 2, text: 'Crear una Todo List', completed: true },
+  { id: 3, text: 'Dominar SFC (Single File Components)', completed: false }
+])
 
-const todosCol = collection(db, 'todos')
-const loading = ref(true)
+let nextId = 4
 
-onMounted(() => {
-  const q = query(todosCol, orderBy('text'))
-  onSnapshot(q, (snapshot) => {
-    todos.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
-    loading.value = false
-  })  
-})
-
-const addTodo = async () => {
+const addTodo = () => {
   if (newTodo.value.trim() === '') return
-  await addDoc(todosCol, { 
-    text: newTodo.value.trim(), 
-    completed: false })
+  
+  todos.value.push({
+    id: nextId++,
+    text: newTodo.value.trim(),
+    completed: false
+  })
+  
   newTodo.value = ''
 }
 
-const removeTodo = async (todo) => {
-  await deleteDoc(doc(db, 'todos', todo.id))
-}
-
-const toggleTodo = async (todo) => {
-  await updateDoc(doc(db, 'todos', todo.id), { completed: !todo.completed })
+const removeTodo = (todo) => {
+  const index = todos.value.indexOf(todo)
+  if (index > -1) {
+    todos.value.splice(index, 1)
+  }
 }
 
 const remainingTodos = computed(() => {
@@ -41,71 +37,60 @@ const completedTodos = computed(() => {
   return todos.value.filter(todo => todo.completed).length
 })
 
-const clearCompleted = async () => {
-  const completed = todos.value.filter(t => t.completed)
-  for (const t of completed) {
-    await deleteDoc(doc(db, 'todos', t.id))
-  }
+const clearCompleted = () => {
+  todos.value = todos.value.filter(todo => !todo.completed)
 }
 </script>
 
 <template>
-  <section v-if="loading" class="auth-shell">
-    <div class="auth-card">
-      <p>Cargando...</p>
+  <div class="todo-app">
+    <h1>Todo List Var</h1>
+    
+    <div class="add-todo-form">
+      <input 
+        v-model="newTodo" 
+        @keyup.enter="addTodo" 
+        type="text" 
+        placeholder="¿Qué necesitas hacer?" 
+        class="todo-input"
+      />
+      <button @click="addTodo" class="add-btn">Agregar</button>
     </div>
-  </section>
-  <section v-else>
-    <div class="todo-app">
-      <h1>📝 Mi Todo List</h1>
-      
-      <div class="add-todo-form">
-        <input 
-          v-model="newTodo" 
-          @keyup.enter="addTodo" 
-          type="text" 
-          placeholder="¿Qué necesitas hacer?" 
-          class="todo-input"
-        />
-        <button @click="addTodo" class="add-btn">Agregar</button>
-      </div>
-      
-      <div class="stats" v-if="todos.length > 0">
-        <span>Pendientes: {{ remainingTodos }}</span>
-        <span>Completadas: {{ completedTodos }}</span>
-      </div>
-      
-      <ul class="todo-list" v-if="todos.length > 0">
-        <li 
-          v-for="todo in todos" 
-          :key="todo.id" 
-          :class="{ completed: todo.completed }"
-          class="todo-item"
-        >
-          <input 
-            type="checkbox" 
-            :checked="todo.completed"
-            @change="toggleTodo(todo)"
-            class="todo-checkbox"
-          />
-          <span class="todo-text">{{ todo.text }}</span>
-          <button @click="removeTodo(todo)" class="remove-btn">✕</button>
-        </li>
-      </ul>
-      
-      <div class="empty-state" v-else>
-        <p>¡No hay tareas! Agrega una nueva tarea para comenzar.</p>
-      </div>
-      
-      <button 
-        v-if="completedTodos > 0" 
-        @click="clearCompleted" 
-        class="clear-btn"
+    
+    <div class="stats" v-if="todos.length > 0">
+      <span>Pendientes: {{ remainingTodos }}</span>
+      <span>Completadas: {{ completedTodos }}</span>
+    </div>
+    
+    <ul class="todo-list" v-if="todos.length > 0">
+      <li 
+        v-for="todo in todos" 
+        :key="todo.id" 
+        :class="{ completed: todo.completed }"
+        class="todo-item"
       >
-        Limpiar completadas
-      </button>
+        <input 
+          type="checkbox" 
+          v-model="todo.completed" 
+          class="todo-checkbox"
+        />
+        <span class="todo-text">{{ todo.text }}</span>
+        <button @click="removeTodo(todo)" class="remove-btn">✕</button>
+      </li>
+    </ul>
+    
+    <div class="empty-state" v-else>
+      <p>¡No hay tareas! Agrega una nueva tarea para comenzar.</p>
     </div>
-  </section>
+    
+    <button 
+      v-if="completedTodos > 0" 
+      @click="clearCompleted" 
+      class="clear-btn"
+    >
+      Limpiar completadas
+    </button>
+  </div>
 </template>
 
 <style scoped>

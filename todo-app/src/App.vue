@@ -1,4 +1,5 @@
 <script setup>
+/* TODO: Firebase Authenticacion */
 import { computed, onMounted, ref } from 'vue'
 import {
   //createUserWithEmailAndPassword,
@@ -7,13 +8,16 @@ import {
   signOut
 } from 'firebase/auth'
 import { auth } from './firebase.js'
-import TodoList from './components/TodoList.vue'
+import TodoListFirebase from './components/TodoListFirebase.vue'
+import TodoListVar from './components/TodoListVar.vue'
+import TodoListLS from './components/TodoListLS.vue'
 
 const email = ref('')
 const password = ref('')
 const authError = ref('')
 const user = ref(null)
 const loading = ref(true)
+const selectedList = ref('var')
 
 onMounted(() => {
   onAuthStateChanged(auth, (currentUser) => {
@@ -46,6 +50,10 @@ const handleRegister = async () => {
 */
 const handleLogout = async () => {
   await signOut(auth)
+}
+
+const setSelectedList = (listKey) => {
+  selectedList.value = listKey
 }
 </script>
 
@@ -86,7 +94,36 @@ const handleLogout = async () => {
         <button class="logout-btn" @click="handleLogout">Cerrar sesión</button>
       </header>
 
-      <TodoList />
+      <nav class="list-menu" aria-label="Seleccionar lista">
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'var' }"
+          type="button"
+          @click="setSelectedList('var')"
+        >
+          Lista Var
+        </button>
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'ls' }"
+          type="button"
+          @click="setSelectedList('ls')"
+        >
+          Lista LS
+        </button>
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'firebase' }"
+          type="button"
+          @click="setSelectedList('firebase')"
+        >
+          Lista Firebase
+        </button> 
+      </nav>
+
+      <TodoListVar v-if="selectedList === 'var'" />
+      <TodoListLS v-else-if="selectedList === 'ls'" />
+      <TodoListFirebase v-else-if="selectedList === 'firebase'" />
     </section>
   </main>
 </template>
@@ -207,5 +244,33 @@ main {
 .logout-btn {
   background: rgba(255, 255, 255, 0.18);
   color: white;
+}
+
+.list-menu {
+  width: min(100%, 500px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.menu-btn {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.menu-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.menu-btn.active {
+  background: #ffffff;
+  color: #4b4b4b;
 }
 </style>
