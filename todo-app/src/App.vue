@@ -11,6 +11,7 @@ import { auth } from './firebase.js'
 import TodoListFirebase from './components/TodoListFirebase.vue'
 import TodoListVar from './components/TodoListVar.vue'
 import TodoListLS from './components/TodoListLS.vue'
+import TodoListJSON from './components/TodoListJSON.vue'
 
 const email = ref('')
 const password = ref('')
@@ -119,11 +120,20 @@ const setSelectedList = (listKey) => {
         >
           Lista Firebase
         </button> 
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'json' }"
+          type="button"
+          @click="setSelectedList('json')"
+        >
+          Lista API REST
+        </button> 
       </nav>
 
       <TodoListVar v-if="selectedList === 'var'" />
       <TodoListLS v-else-if="selectedList === 'ls'" />
       <TodoListFirebase v-else-if="selectedList === 'firebase'" />
+      <TodoListJSON v-else-if="selectedList === 'json'" />
     </section>
   </main>
 </template>
