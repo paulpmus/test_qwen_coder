@@ -3,7 +3,8 @@ import { ref, computed, onMounted } from 'vue'
 
 const newTodo = ref('')
 const todos = ref([])
-const API_URL = 'http://localhost:3000/api/todos'
+//const API_URL = 'http://localhost:3000/api/todos'
+const API_URL = 'https://todo-back-do6n.onrender.com/api/todos'
 
 const loadTodos = async () => {
   try {
