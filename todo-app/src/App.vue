@@ -12,6 +12,7 @@ import TodoListFirebase from './components/TodoListFirebase.vue'
 import TodoListVar from './components/TodoListVar.vue'
 import TodoListLS from './components/TodoListLS.vue'
 import TodoListJSON from './components/TodoListJSON.vue'
+import TodoListMongo from './components/TodoListMongo.vue'
 
 const email = ref('')
 const password = ref('')
@@ -126,7 +127,15 @@ const setSelectedList = (listKey) => {
           type="button"
           @click="setSelectedList('json')"
         >
-          Lista API REST
+          Lista API REST json
+        </button>
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'mongo' }"
+          type="button"
+          @click="setSelectedList('mongo')"
+        >
+          Lista API REST Mongo
         </button> 
       </nav>
 
@@ -134,6 +143,7 @@ const setSelectedList = (listKey) => {
       <TodoListLS v-else-if="selectedList === 'ls'" />
       <TodoListFirebase v-else-if="selectedList === 'firebase'" />
       <TodoListJSON v-else-if="selectedList === 'json'" />
+      <TodoListMongo v-else-if="selectedList === 'mongo'" />
     </section>
   </main>
 </template>
