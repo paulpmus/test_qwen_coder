@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs/promises');
 const path = require('path');
+require('dotenv').config(); // carga variables de entorno
 
 const app = express();
 const PORT = 3000;
@@ -9,6 +10,18 @@ const DATA_FILE = path.join(__dirname, 'data', 'todos.json');
 
 app.use(cors());
 app.use(express.json());
+
+// Middleware to validate API Key
+const apiKeyMiddleware = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'];
+  if (!apiKey || apiKey !== process.env.API_KEY) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+};
+
+// Apply middleware to all routes except the static ones
+app.use('/api', apiKeyMiddleware);
 
 // Helper to read data
 async function getTodos() {

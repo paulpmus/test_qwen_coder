@@ -3,12 +3,17 @@ import { ref, computed, onMounted } from 'vue'
 
 const newTodo = ref('')
 const todos = ref([])
-//const API_URL = 'http://localhost:3000/api/todos'
-const API_URL = 'https://todo-back-do6n.onrender.com/api/todos'
+const API_URL = import.meta.env.VITE_BACK_JSON_URL
+const API_KEY = import.meta.env.VITE_API_KEY
 
 const loadTodos = async () => {
   try {
-    const res = await fetch(API_URL)
+    const res = await fetch(API_URL, {
+      method: 'GET',
+      headers: {
+        'x-api-key': API_KEY
+      }
+    });
     const data = await res.json()
     todos.value = data
   } catch (err) {
@@ -26,7 +31,10 @@ const addTodo = async () => {
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'x-api-key': API_KEY, 
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify({ text: newTodo.value.trim() })
     })
     const data = await res.json()
@@ -43,7 +51,10 @@ const toggleTodo = async (todo) => {
   try {
     const res = await fetch(`${API_URL}/${todo.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'x-api-key': API_KEY,
+        'Content-Type': 'application/json' 
+      },
       body: JSON.stringify({ completed: todo.completed })
     })
     const data = await res.json()
@@ -58,7 +69,10 @@ const toggleTodo = async (todo) => {
 const removeTodo = async (todo) => {
   try {
     const res = await fetch(`${API_URL}/${todo.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'x-api-key': API_KEY
+      }
     })
     const data = await res.json()
     console.log(data)
@@ -84,7 +98,10 @@ const clearCompleted = async () => {
   try {
     // You could also do a bulk delete endpoint in Express here, but let's assume we made one
     const res = await fetch(`${API_URL}/completed`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'x-api-key': API_KEY
+      }
     })
     const data = await res.json()
     console.log(data)

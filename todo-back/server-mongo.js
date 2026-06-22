@@ -14,6 +14,18 @@ mongoose.connect(process.env.MONGO_URI)
 app.use(cors());
 app.use(express.json());
 
+// Middleware to validate API Key
+const apiKeyMiddleware = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'];
+  if (!apiKey || apiKey !== process.env.API_KEY) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+};
+
+// Apply middleware to all routes except the static ones
+app.use('/api', apiKeyMiddleware);
+
 // Definir esquema y modelo
 const todoSchema = new mongoose.Schema({
   text: { type: String, required: true },
