@@ -1,12 +1,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
+const loading = ref(false)
 const newTodo = ref('')
 const todos = ref([])
 const API_URL = import.meta.env.VITE_BACK_MONGO_URL
 const API_KEY = import.meta.env.VITE_API_KEY
 
 const loadTodos = async () => {
+  loading.value = true
   try {
     const res = await fetch(API_URL, {
       method: 'GET',
@@ -18,6 +20,8 @@ const loadTodos = async () => {
     todos.value = data
   } catch (err) {
     console.error('Failed to load todos', err)
+  } finally {
+    loading.value = false
   }
 }
 
@@ -115,7 +119,7 @@ const clearCompleted = async () => {
 
 <template>
   <div class="todo-app">
-    <h1>Todo List API REST</h1>
+    <h1>Todo List API REST Mongo</h1>
     
     <div class="add-todo-form">
       <input 
@@ -132,7 +136,7 @@ const clearCompleted = async () => {
       <span>Pendientes: {{ remainingTodos }}</span>
       <span>Completadas: {{ completedTodos }}</span>
     </div>
-    
+    <div v-if="loading" class="loading">Cargando...</div>
     <ul class="todo-list" v-if="todos.length > 0">
       <li 
         v-for="todo in todos" 
@@ -305,5 +309,11 @@ h1 {
 
 .clear-btn:hover {
   background: #e0e0e0;
+}
+
+.loading {
+  color: #007bff;
+  font-style: italic;
+  padding: 10px;
 }
 </style>
