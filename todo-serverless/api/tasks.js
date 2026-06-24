@@ -47,35 +47,27 @@ export default async function handler(req, res) {
     await connectDB();
 
     switch (req.method) {
-        case "GET":{
-            try {
-                const todos = await Todo.find();
-                res.status(200).json(todos);
-            } catch (error) {
-                res.status(500).json({ error: 'Failed to read todos' });
-            }
-            break;
+      case "GET":{
+          try {
+              const todos = await Todo.find();
+              res.status(200).json(todos);
+          } catch (error) {
+              res.status(500).json({ error: 'Failed to read todos' });
+          }
+          break;
+      }
+      case "POST":{
+        try {
+          const newTodo = new Todo({ text: req.body.text });
+          await newTodo.save();
+          res.status(201).json(newTodo);
+        } catch (error) {
+          res.status(500).json({ error: 'Failed to add todo' });
         }
-        case "POST":{
-        // Insertar nueva tarea
-        const { tarea } = req.body;
-        res.status(201).json({ mensaje: 'en contruccion' });
         break;
-        }
-        case "PUT":{
-        // Modificar tarea existente
-        const { id, nuevaTarea } = req.body;
-        res.status(200).json({ mensaje: 'en contruccion' });
-        break;
-        }
-        case "DELETE":{
-        // Eliminar tarea
-        const { id } = req.body;
-        res.status(200).json({ mensaje: 'en contruccion' });
-        break;
-        }
-        default:
-        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
-        res.status(405).end(`Método ${req.method} no permitido`);
+      }
+      default:
+      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+      res.status(405).end(`Método ${req.method} no permitido`);
     }
 }
