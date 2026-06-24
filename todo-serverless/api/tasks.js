@@ -30,6 +30,17 @@ function validateApiKey(req, res) {
 
 export default async function handler(req, res) {
 
+    // Configuración básica de CORS (permite todo)
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+
+    // Manejo de preflight request (OPTIONS)
+    if (req.method === "OPTIONS") {
+      res.status(200).end();
+      return;
+    }
+
     if (!validateApiKey(req, res)) return;
 
     await connectDB();
