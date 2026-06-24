@@ -32,7 +32,7 @@ function validateApiKey(req, res) {
 export default async function handler(req, res) {
 
     // Configuración básica de CORS (permite todo)
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
 
