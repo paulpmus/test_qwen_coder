@@ -1,3 +1,4 @@
+// funcion solo debe funcionar en plataforma cloud (vercel)
 // api/tasks.js
 import mongoose from "mongoose";
 
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
     // Configuración básica de CORS (permite todo)
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
 
     // Manejo de preflight request (OPTIONS)
     if (req.method === "OPTIONS") {
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (!validateApiKey(req, res)) return;
+    //if (!validateApiKey(req, res)) return;
 
     await connectDB();
 
@@ -58,19 +59,19 @@ export default async function handler(req, res) {
         case "POST":{
         // Insertar nueva tarea
         const { tarea } = req.body;
-        res.status(201).json({ mensaje: `Tarea '${tarea}' agregada` });
+        res.status(201).json({ mensaje: 'en contruccion' });
         break;
         }
         case "PUT":{
         // Modificar tarea existente
         const { id, nuevaTarea } = req.body;
-        res.status(200).json({ mensaje: `Tarea ${id} actualizada a '${nuevaTarea}'` });
+        res.status(200).json({ mensaje: 'en contruccion' });
         break;
         }
         case "DELETE":{
         // Eliminar tarea
         const { id } = req.body;
-        res.status(200).json({ mensaje: `Tarea ${id} eliminada` });
+        res.status(200).json({ mensaje: 'en contruccion' });
         break;
         }
         default:
