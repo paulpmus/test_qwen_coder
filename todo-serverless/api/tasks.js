@@ -18,7 +18,20 @@ async function connectDB() {
   }
 }
 
+// Middleware para validar API key
+function validateApiKey(req, res) {
+  const apiKey = req.headers["x-api-key"];
+  if (!apiKey || apiKey !== process.env.API_KEY) {
+    res.status(401).json({ error: "Unauthorized: Invalid API key" });
+    return false;
+  }
+  return true;
+}
+
 export default async function handler(req, res) {
+
+    if (!validateApiKey(req, res)) return;
+
     await connectDB();
 
     switch (req.method) {
