@@ -1,4 +1,4 @@
-// funcion solo debe funcionar en plataforma cloud (vercel)
+// funcion solo funciona en plataforma cloud (vercel)
 // api/tasks.js
 import mongoose from "mongoose";
 
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    //if (!validateApiKey(req, res)) return;
+    if (!validateApiKey(req, res)) return;
 
     await connectDB();
 
