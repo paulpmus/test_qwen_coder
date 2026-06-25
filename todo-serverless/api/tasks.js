@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     // Configuración básica de CORS (permite todo)
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "*");
 
     // Manejo de preflight request (OPTIONS)
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
         break;
       }
       default:
-      res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+      res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Método ${req.method} no permitido`);
     }
 }
