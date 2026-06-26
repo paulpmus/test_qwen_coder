@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 3000
 
 // Conexión a PostgreSQL (usa tu conexión de Supabase)
 const sql = postgres(process.env.DATABASE_URL, {
-  ssl: 'require'
+  ssl: 'require',
+  connection: {
+    family: 4 // fuerza IPv4
+  }
 })
 
 app.use(cors())
