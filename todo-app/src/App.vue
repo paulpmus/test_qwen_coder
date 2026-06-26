@@ -120,7 +120,7 @@ const setSelectedList = (listKey) => {
           type="button"
           @click="setSelectedList('firebase')"
         >
-          Lista Firebase
+          Lista FireStore
         </button> 
         <button
           class="menu-btn"

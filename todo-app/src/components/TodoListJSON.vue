@@ -120,7 +120,7 @@ const clearCompleted = async () => {
 <template>
   <div class="todo-app">
     <h1>Todo List API REST json</h1>
-    
+    <h3 style="text-align: center;">Backend guarda en archivo json</h3>
     <div class="add-todo-form">
       <input 
         v-model="newTodo" 

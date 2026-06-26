@@ -120,7 +120,7 @@ const clearCompleted = async () => {
 <template>
   <div class="todo-app">
     <h1>Todo List API REST Serverless Mongo</h1>
-    
+    <h3 style="text-align: center;">(Sin backend)</h3>
     <div class="add-todo-form">
       <input 
         v-model="newTodo" 

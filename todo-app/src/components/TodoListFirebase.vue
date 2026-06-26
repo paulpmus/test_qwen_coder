@@ -58,7 +58,7 @@ const clearCompleted = async () => {
   <section v-else>
     <div class="todo-app">
       <h1>Todo List FireStore</h1>
-      
+      <h3 style="text-align: center;">(Sin backend)</h3>
       <div class="add-todo-form">
         <input 
           v-model="newTodo" 
