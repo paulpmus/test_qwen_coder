@@ -15,6 +15,7 @@ import TodoListJSON from './components/TodoListJSON.vue'
 import TodoListMongo from './components/TodoListMongo.vue'
 import TodoListServerless from './components/TodoListServerless.vue'
 import TodoListPostgre from './components/TodoListPostgre.vue'
+import TodoListSupabase from './components/TodoListSupabase.vue'
 
 const email = ref('')
 const password = ref('')
@@ -154,6 +155,14 @@ const setSelectedList = (listKey) => {
           @click="setSelectedList('postgre')"
         >
           Lista API REST PostgreSQL
+        </button>
+        <button
+          class="menu-btn"
+          :class="{ active: selectedList === 'supabase' }"
+          type="button"
+          @click="setSelectedList('supabase')"
+        >
+          Lista Supabase
         </button> 
       </nav>
 
@@ -164,6 +173,7 @@ const setSelectedList = (listKey) => {
       <TodoListMongo v-else-if="selectedList === 'mongo'" />
       <TodoListServerless v-else-if="selectedList === 'serverless'" />
       <TodoListPostgre v-else-if="selectedList === 'postgre'" />
+      <TodoListSupabase v-else-if="selectedList === 'supabase'" />
     </section>
   </main>
 </template>
